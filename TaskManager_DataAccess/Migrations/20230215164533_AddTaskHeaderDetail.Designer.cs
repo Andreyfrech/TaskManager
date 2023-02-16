@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskManager_DataAccess.Data;
 
@@ -11,9 +12,10 @@ using TaskManager_DataAccess.Data;
 namespace TaskManager_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230215164533_AddTaskHeaderDetail")]
+    partial class AddTaskHeaderDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,46 +275,6 @@ namespace TaskManager_DataAccess.Migrations
                     b.ToTable("TypeTasks");
                 });
 
-            modelBuilder.Entity("TaskManager_Models.TaskDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("ActualTimeWork")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("AllottedTimeWork")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateComplition")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateCreate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateUpdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("PlannedDateComplition")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TaskHeaderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaskHeaderId");
-
-                    b.ToTable("TaskDetail");
-                });
-
             modelBuilder.Entity("TaskManager_Models.TaskHeader", b =>
                 {
                     b.Property<int>("Id")
@@ -407,17 +369,6 @@ namespace TaskManager_DataAccess.Migrations
                     b.Navigation("TaskHeader");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TaskManager_Models.TaskDetail", b =>
-                {
-                    b.HasOne("TaskManager_Models.TaskHeader", "TaskHeader")
-                        .WithMany()
-                        .HasForeignKey("TaskHeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TaskHeader");
                 });
 
             modelBuilder.Entity("TaskManager_Models.TaskHeader", b =>

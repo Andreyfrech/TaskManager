@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskManager_DataAccess.Data;
 
@@ -11,9 +12,10 @@ using TaskManager_DataAccess.Data;
 namespace TaskManager_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230214192042_AddIdentityUserRole")]
+    partial class AddIdentityUserRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,7 +165,6 @@ namespace TaskManager_DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactPersonId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ContractNumber")
@@ -252,28 +253,7 @@ namespace TaskManager_DataAccess.Migrations
                     b.ToTable("StatusTasks");
                 });
 
-            modelBuilder.Entity("TaskManager_DataAccess.TypeTask", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TypeTasks");
-                });
-
-            modelBuilder.Entity("TaskManager_Models.TaskDetail", b =>
+            modelBuilder.Entity("TaskManager_DataAccess.Tasks", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -287,6 +267,13 @@ namespace TaskManager_DataAccess.Migrations
                     b.Property<DateTime>("AllottedTimeWork")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ClentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateComplition")
                         .HasColumnType("datetime2");
 
@@ -297,34 +284,6 @@ namespace TaskManager_DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("PlannedDateComplition")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TaskHeaderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaskHeaderId");
-
-                    b.ToTable("TaskDetail");
-                });
-
-            modelBuilder.Entity("TaskManager_Models.TaskHeader", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("ClentId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ClientId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -361,7 +320,28 @@ namespace TaskManager_DataAccess.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("TaskHeader");
+                    b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("TaskManager_DataAccess.TypeTask", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TypeTasks");
                 });
 
             modelBuilder.Entity("TaskManager_Models.UserClient", b =>
@@ -383,16 +363,14 @@ namespace TaskManager_DataAccess.Migrations
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("ContactPersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ContactPersonId");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("TaskManager_DataAccess.HistoryTask", b =>
                 {
-                    b.HasOne("TaskManager_Models.TaskHeader", "TaskHeader")
+                    b.HasOne("TaskManager_DataAccess.Tasks", "Tasks")
                         .WithMany()
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -404,23 +382,12 @@ namespace TaskManager_DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TaskHeader");
+                    b.Navigation("Tasks");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TaskManager_Models.TaskDetail", b =>
-                {
-                    b.HasOne("TaskManager_Models.TaskHeader", "TaskHeader")
-                        .WithMany()
-                        .HasForeignKey("TaskHeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TaskHeader");
-                });
-
-            modelBuilder.Entity("TaskManager_Models.TaskHeader", b =>
+            modelBuilder.Entity("TaskManager_DataAccess.Tasks", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Client")
                         .WithMany()

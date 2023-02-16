@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TaskManager_DataAccess.BaseData;
+using TaskManager_Models;
 
 namespace TaskManager_DataAccess
 {
@@ -28,9 +30,9 @@ namespace TaskManager_DataAccess
         [Display(Name = "Пользователь")]
         public string UserId { get; set; }
 
-        //[ForeignKey("UserId")]
-        //public virtual IdentityUser User { get; set; }
+        [ForeignKey("UserId")]
+        public virtual IdentityUser User { get; set; }
         [ForeignKey("TaskId")]
-        public virtual Tasks Tasks { get; set; }
+        public virtual TaskHeader TaskHeader { get; set; }
     }
 }

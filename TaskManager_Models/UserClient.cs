@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -20,8 +21,8 @@ namespace TaskManager_Models
         [Display(Name = "Клиент")]
         public int ClientId { get; set; }
 
-        //[ForeignKey("UserId")]
-        //public virtual IdentityUser User { get; set; }
+        [ForeignKey("UserId")]
+        public virtual IdentityUser User { get; set; }
         [ForeignKey("ClientId")]
         public virtual Clients Client { get; set; }
     }

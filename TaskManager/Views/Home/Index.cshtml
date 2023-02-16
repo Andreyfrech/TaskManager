@@ -1,8 +1,37 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<TaskManager_Models.TaskHeader>
+
+@section Scripts{
+    <script type="text/javascript">
+        var grid, cv, detail, cvDetail, currentItem;
+        c1.documentReady(function () {
+            grid = wijmo.Control.getControl("#Customer");
+            cv = grid.collectionView;
+            cv.currentChanged.addHandler(getOrders);
+            cv.moveCurrentToFirst();
+        });
+
+        function getOrders() {
+            detail = wijmo.Control.getControl("#Orders");
+            cvDetail = detail.collectionView;
+            cvDetail.refresh();
+        }
+
+        function getCustomer(sender, e) {
+            if (e.extraRequestData == null) {
+                e.extraRequestData = {};
+            }
+
+            grid = wijmo.Control.getControl("#Customer");
+            if (grid) {
+                currentItem = grid.collectionView.currentItem;
+                e.extraRequestData["CustomerID"] = currentItem ? currentItem.CustomerID : "";
+            }
+        }
+    </script>
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+<c1-flex-grid id="Customer" auto-generate-columns="true" is-read-only="true" selection-mode="Row"> 
+    <c1-flex-grid-column binding="Name">test</c1-flex-grid-column>
+    <c1-items-source source-collection="Model" />
+</c1-flex-grid>

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TaskManager_DataAccess.Data;
 
-public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+public class DbContext : IdentityDbContext<IdentityUser>
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    public DbContext(DbContextOptions<DbContext> options)
         : base(options)
     {
     }
