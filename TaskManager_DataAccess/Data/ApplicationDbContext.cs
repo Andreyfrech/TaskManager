@@ -18,7 +18,7 @@ namespace TaskManager_DataAccess.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserClient>().HasKey(u => new { u.UserId, u.ClientId });
+           // modelBuilder.Entity<UserClient>().HasKey(u => new { u.UserId, u.ClientId });
             modelBuilder.Entity<IdentityUserRole<string>>().HasKey(u => new { u.UserId, u.RoleId });
             modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(u => new { u.UserId});
             modelBuilder.Ignore<IdentityUserLogin<string>>();
@@ -35,6 +35,7 @@ namespace TaskManager_DataAccess.Data
         public DbSet<TaskHeader> TaskHeader { get; set; }
         public DbSet<TaskDetail> TaskDetail { get; set; }
         public DbSet<TypeTask>      TypeTasks { get; set; }
-        public DbSet<UserClient>    UserClients { get; set; }
+       // public DbSet<UserClient>    UserClients { get; set; }
+       public DbSet<ApplicationUser> ApplicationUser { get; set; }
     }
 }

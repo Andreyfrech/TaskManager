@@ -74,6 +74,10 @@ namespace TaskManager_DataAccess.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -113,6 +117,8 @@ namespace TaskManager_DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -321,12 +327,8 @@ namespace TaskManager_DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ClentId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ClientId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
 
                     b.Property<string>("DirectorId")
                         .IsRequired()
@@ -351,7 +353,7 @@ namespace TaskManager_DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClentId");
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("DirectorId");
 
@@ -364,19 +366,28 @@ namespace TaskManager_DataAccess.Migrations
                     b.ToTable("TaskHeader");
                 });
 
-            modelBuilder.Entity("TaskManager_Models.UserClient", b =>
+            modelBuilder.Entity("TaskManager_Models.ApplicationUser", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<int>("ClientId")
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrganizationId")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "ClientId");
+                    b.Property<string>("StreetAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("OrganizationId");
 
-                    b.ToTable("UserClients");
+                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("TaskManager_DataAccess.Clients", b =>
@@ -422,9 +433,11 @@ namespace TaskManager_DataAccess.Migrations
 
             modelBuilder.Entity("TaskManager_Models.TaskHeader", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Client")
+                    b.HasOne("TaskManager_DataAccess.Clients", "Client")
                         .WithMany()
-                        .HasForeignKey("ClentId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Director")
                         .WithMany()
@@ -461,23 +474,15 @@ namespace TaskManager_DataAccess.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("TaskManager_Models.UserClient", b =>
+            modelBuilder.Entity("TaskManager_Models.ApplicationUser", b =>
                 {
-                    b.HasOne("TaskManager_DataAccess.Clients", "Client")
+                    b.HasOne("TaskManager_DataAccess.Clients", "Clients")
                         .WithMany()
-                        .HasForeignKey("ClientId")
+                        .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Client");
-
-                    b.Navigation("User");
+                    b.Navigation("Clients");
                 });
 #pragma warning restore 612, 618
         }

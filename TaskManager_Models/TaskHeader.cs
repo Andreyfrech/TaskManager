@@ -32,7 +32,7 @@ namespace TaskManager_Models
 
         [Required]
         [Display(Name = "Клиент")]
-        public string ClientId { get; set; }
+        public int ClientId { get; set; }
 
         [Required]
         [Display(Name = "Планируемая дата завершения")]
@@ -46,7 +46,7 @@ namespace TaskManager_Models
         public virtual IdentityUser Director { get; set; }
         [ForeignKey("ExecutorId")]
         public virtual IdentityUser Executor { get; set; }
-        [ForeignKey("ClentId")]
-        public virtual IdentityUser Client { get; set; }
+        [ForeignKey("ClientId")]
+        public virtual Clients Client { get; set; }
     }
 }

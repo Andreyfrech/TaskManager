@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -18,6 +19,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using TaskManager_DataAccess;
+using TaskManager_Models;
 using TaskManager_Utility;
 
 namespace TaskManager.Areas.Identity.Pages.Account
@@ -104,6 +107,19 @@ namespace TaskManager.Areas.Identity.Pages.Account
 
             [Required]
             public string Role { get; set; }
+
+            [Display(Name = "ФИО")]
+            public string FullName { get; set; }
+            [Display(Name = "Адресс")]
+            public string StreetAddress { get; set; }
+            [Display(Name = "Город")]
+            public string City { get; set; }
+            [Display(Name = "Организация")]
+            public int OrganizationId { get; set; }
+            [Display(Name = "Номер телефона")]
+            public string PhoneNumber { get; set; }
+            [ForeignKey("OrganizationId")]
+            public virtual Clients Clients { get; set; }
         }
 
 
@@ -126,7 +142,10 @@ namespace TaskManager.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,
+                    FullName = Input.FullName, PhoneNumber = Input.PhoneNumber,
+                    StreetAddress = Input.StreetAddress, City = Input.City,
+                    OrganizationId = Input.OrganizationId};//CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

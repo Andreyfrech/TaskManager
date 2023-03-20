@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using TaskManager_DataAccess.Data;
 using Microsoft.AspNetCore.Identity;
+using TaskManager_DataAccess.Repository.IRepository;
+using TaskManager_DataAccess.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -25,8 +27,15 @@ builder.Services.AddSession(Options =>
     Options.Cookie.HttpOnly = true;
     Options.Cookie.IsEssential = true;
 });
+builder.Services.AddScoped<ITaskHeaderRepository,       TaskHeaderRepository>();
+builder.Services.AddScoped<ITaskDetailRepository,       TaskDetailRepository>();
+builder.Services.AddScoped<IHistoryTasksRepository,     HistoryTaskRepository>();
+builder.Services.AddScoped<IStatusTaskRepository,       StatusTaskRepoSitory>();
+builder.Services.AddScoped<IClientsRepository,          ClientRepository>();
+builder.Services.AddScoped<ITypeTaskRepository,         TypeTaskRepository>();
+builder.Services.AddScoped<IApplicationUserRepository,  ApplicationUserRepository>();
 builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
+//builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
