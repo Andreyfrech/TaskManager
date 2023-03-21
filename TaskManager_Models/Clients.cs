@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,8 +21,8 @@ namespace TaskManager_DataAccess
         [Display(Name = "ИНН")]
         public decimal INN { get; set; }
 
-        //[Display(Name = "Контактное лицо")]
-        //public string ContactPersonId { get; set; }
+        [Display(Name = "Контактное лицо")]
+        public string ContactPersonId { get; set; }
 
         [Display(Name = "Номер телефона")]
         public string PhoneNumber { get; set; }
@@ -31,7 +32,7 @@ namespace TaskManager_DataAccess
         [Display(Name = "Договор")]
         public string ContractNumber { get; set; }
 
-        //[ForeignKey("ContactPersonId")]
-        //public virtual IdentityUser User { get; set; }
+        [ForeignKey("ContactPersonId")]
+        public virtual IdentityUser User { get; set; }
     }
 }

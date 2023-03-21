@@ -1,8 +1,148 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@*@model TaskManager_Models.ViewModel.HomeViewModel*@
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+
+
+<table id="tblData" class="table table-striped table-bordered pt-2 table-dark" style="width:100%">
+    <thead class="thead-dark">
+        <tr class="table-info">
+            <th>Id</th>
+            <th>Имя</th>
+            <th>Номер телефона</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+@section Scripts
+    {
+    <script src="~/js/JavaScript.js"></script>
+   @* <script type="text/javascript">
+        $(document).ready(function () {
+    loadDataTable()
+});
+
+function loadDataTable() {
+    alert("Hi2");
+
+    dataTable = $("#tblData").DataTable({
+       // alert("text");
+        "ajax": {
+            "url": "/home/GetInquiryList"
+        },
+        "columns": []
+    });
+            alert("hello");
+}
+      
+        //var grid, cv, detail, cvDetail, currentItem;
+        //c1.documentReady(function () {
+        //    grid = wijmo.Control.getControl("#Customer");
+        //    cv = grid.collectionView;
+        //    cv.currentChanged.addHandler(getOrders);
+        //    cv.moveCurrentToFirst();
+        //});
+
+        //function getOrders() {
+        //    detail = wijmo.Control.getControl("#Orders");
+        //    cvDetail = detail.collectionView;
+        //    cvDetail.refresh();
+        //}
+
+        //function getCustomer(sender, e) {
+        //    if (e.extraRequestData == null) {
+        //        e.extraRequestData = {};
+        //    }
+
+        //    grid = wijmo.Control.getControl("#Customer");
+        //    if (grid) {
+        //        currentItem = grid.collectionView.currentItem;
+        //        e.extraRequestData["CustomerID"] = currentItem ? currentItem.CustomerID : "";
+        //    }
+        //}*@
+    </script>
+    @*<script src="~/js/JavaScript.js"></script>*@
+}
+@*<style>
+    .e-grid-column .ejs-grid {
+        width: 50px;
+    }
+    .Grid2{
+        width: 100px;
+    }
+    .Grid12{
+        hyphens: auto;
+    }
+
+    .div1 {
+        background-color:brown;
+       display: inline-block;
+    }
+
+    .div2 {
+        background-color:darkgreen;
+        float: right;
+    }
+
+    .div3 {
+        display: inline-block;
+    }
+</style>
+<div class="Grid">
+    TestTest TestTest TestTest TestTest TestTest
 </div>
+
+<div class="bg-white p-3">
+    <ejs-grid id="Grid"   dataSource="@Model.TaskHeaders"  allowReordering="true" allowTextWrap="true" allowMultiSorting="true" allowFiltering="true" allowSorting="true" allowPaging="true" >
+        <e-grid-filtersettings  type=CheckBox></e-grid-filtersettings>
+        <e-grid-textwrapsettings wrapMode="Both"></e-grid-textwrapsettings>
+        <e-grid-pagesettings pageSize="5"></e-grid-pagesettings>
+        <e-grid-columns >
+            <e-grid-column field="Id" headerText="ID" isPrimaryKey="true"  textAlign="Right" width="60"></e-grid-column>
+            <e-grid-column field="Name" headerText="Название" textAlign="Right" ></e-grid-column>
+
+            <e-grid-column field="Status.Name" headerText="Статус" textAlign="Right" width="150"></e-grid-column>
+            <e-grid-column field="Type.Name" headerText="Тип" textAlign="Right" width="150"></e-grid-column>
+            <e-grid-column field="Director.UserName"  headerText="Постановщик" style="font-size:large" textAlign="Right"></e-grid-column>
+            <e-grid-column field="Executor.UserName" headerText="Исполнитель"  textAlign="Right"></e-grid-column>
+            <e-grid-column field="Client.Name" headerText="Клиент" textAlign="Right"></e-grid-column>
+            <e-grid-column field="PlannedDateComplition" headerText="Дата завершения план" customFormat="@(new { type="date", format="dd/MM/yyyy" })" width="150"></e-grid-column>
+            <e-grid-column field="" headerText="" width="70"
+                           template="<a rel='nofollow' href='Order/Details/${Id}' class='btn btn-primary'> <i class='fas fa-list'></i><a>">
+
+            </e-grid-column>
+        </e-grid-columns>
+    </ejs-grid>
+</div>
+<div class="div1 bg-white p-3">
+<ejs-grid id="Grid1" width="500px"  dataSource="@Model.TaskHeaders" allowReordering="true" allowTextWrap="true" allowMultiSorting="true" allowFiltering="true" allowSorting="true" allowPaging="true">
+    <e-grid-filtersettings type=CheckBox></e-grid-filtersettings>
+    <e-grid-textwrapsettings wrapMode="Both"></e-grid-textwrapsettings>
+    <e-grid-pagesettings pageSize="5"></e-grid-pagesettings>
+    <e-grid-columns>
+        <e-grid-column field="Id" headerText="ID" isPrimaryKey="true" textAlign="Right" width="60"></e-grid-column>
+        <e-grid-column field="Name" headerText="Название" textAlign="Right"></e-grid-column>
+
+        <e-grid-column field="Status.Name" headerText="Статус" textAlign="Right" width="150"></e-grid-column>
+        <e-grid-column field="Type.Name" headerText="Тип" textAlign="Right" width="150"></e-grid-column>
+
+    </e-grid-columns>
+</ejs-grid>
+ </div>
+<div class="div2 bg-white p-3">
+    <ejs-grid id="Grid2" width="700px" dataSource="@Model.TaskHeaders" allowReordering="true" allowTextWrap="true" allowMultiSorting="true" allowFiltering="true" allowSorting="true" allowPaging="true">
+            <e-grid-filtersettings type=CheckBox></e-grid-filtersettings>
+            <e-grid-textwrapsettings wrapMode="Both"></e-grid-textwrapsettings>
+            <e-grid-pagesettings pageSize="5"></e-grid-pagesettings>
+            <e-grid-columns>
+                <e-grid-column field="Id" headerText="ID" isPrimaryKey="true" textAlign="Right" width="60"></e-grid-column>
+                <e-grid-column field="Name" headerText="Название" textAlign="Right"></e-grid-column>
+
+                <e-grid-column field="Status.Name" headerText="Статус" textAlign="Right" width="150"></e-grid-column>
+                <e-grid-column field="Type.Name" headerText="Тип" textAlign="Right" width="150"></e-grid-column>
+        <e-grid-column field="Director.UserName" headerText="Постановщик" style="font-size:large" textAlign="Right"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    
+</div>*@
